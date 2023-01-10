@@ -93,6 +93,9 @@ CONFIG_IP_R_MONITOR = n #arp VOQ and high rate
 # user priority mapping rule : tos, dscp
 CONFIG_RTW_UP_MAPPING_RULE = tos
 CONFIG_RTW_MBO = n
+# disable virtual intf for openwrt 21.02
+CONFIG_RTW_VIRTUAL_INTF = n
+
 ########################## Android ###########################
 # CONFIG_RTW_ANDROID - 0: no Android, 4/5/6/7/8/9/10/11 : Android version
 CONFIG_RTW_ANDROID = 0
@@ -1350,6 +1353,10 @@ EXTRA_CFLAGS += -DDM_ODM_SUPPORT_TYPE=0x04
 ifeq ($(CONFIG_RTW_MBO), y)
 EXTRA_CFLAGS += -DCONFIG_RTW_MBO -DCONFIG_RTW_80211K -DCONFIG_RTW_WNM -DCONFIG_RTW_BTM_ROAM
 EXTRA_CFLAGS += -DCONFIG_RTW_80211R
+endif
+
+ifeq ($(CONFIG_RTW_VIRTUAL_INTF), y)
+EXTRA_CFLAGS += -DRTW_VIRTUAL_INTF=1
 endif
 
 # { FriendlyARM boards support
