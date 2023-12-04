@@ -459,8 +459,6 @@ u8 rtw_cfg80211_ch_switch_notify(_adapter *adapter, u8 ch, u8 bw, u8 offset,
 
 #if (LINUX_VERSION_CODE >= KERNEL_VERSION(3, 19, 0))
 	if (started) {
-#if (LINUX_VERSION_CODE >= KERNEL_VERSION(6, 1, 0))
-
 		/* --- cfg80211_ch_switch_started_notfiy() ---
 		 *  A new parameter, bool quiet, is added from Linux kernel v5.11,
 		 *  to see if block-tx was requested by the AP. since currently,
@@ -469,6 +467,9 @@ u8 rtw_cfg80211_ch_switch_notify(_adapter *adapter, u8 ch, u8 bw, u8 offset,
 		 *  called by others with block-tx.
 		 */
 
+#if (LINUX_VERSION_CODE >= KERNEL_VERSION(6, 3, 0))
+		cfg80211_ch_switch_started_notify(adapter->pnetdev, &chdef, 0, 0, false, 0);
+#elif (LINUX_VERSION_CODE >= KERNEL_VERSION(6, 1, 0))
 		cfg80211_ch_switch_started_notify(adapter->pnetdev, &chdef, 0, 0, false);
 #elif (LINUX_VERSION_CODE >= KERNEL_VERSION(5, 11, 0))
 		cfg80211_ch_switch_started_notify(adapter->pnetdev, &chdef, 0, false);
@@ -482,7 +483,9 @@ u8 rtw_cfg80211_ch_switch_notify(_adapter *adapter, u8 ch, u8 bw, u8 offset,
 	if (!rtw_cfg80211_allow_ch_switch_notify(adapter))
 		goto exit;
 
-#if (LINUX_VERSION_CODE >= KERNEL_VERSION(5, 19, 2))
+#if (LINUX_VERSION_CODE >= KERNEL_VERSION(6, 3, 0))
+	cfg80211_ch_switch_notify(adapter->pnetdev, &chdef, 0, 0);
+#elif (LINUX_VERSION_CODE >= KERNEL_VERSION(5, 19, 2))
 	cfg80211_ch_switch_notify(adapter->pnetdev, &chdef, 0);
 #else
 	cfg80211_ch_switch_notify(adapter->pnetdev, &chdef);
@@ -501,11 +504,7 @@ u8 rtw_cfg80211_ch_switch_notify(_adapter *adapter, u8 ch, u8 bw, u8 offset,
 	}
 
 	ctype = rtw_chbw_to_nl80211_channel_type(ch, bw, offset, ht);
-#if (LINUX_VERSION_CODE >= KERNEL_VERSION(5, 19, 2))
-	cfg80211_ch_switch_notify(adapter->pnetdev, freq, ctype, 0);
-#else
 	cfg80211_ch_switch_notify(adapter->pnetdev, freq, ctype);
-#endif
 #endif
 
 exit:
