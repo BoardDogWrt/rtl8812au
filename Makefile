@@ -1408,7 +1408,6 @@ ifeq ($(KERNELRELEASE),)
 $(info *  Building driver with Android support)
 endif
 EXTRA_CFLAGS += -DCONFIG_PLATFORM_ANDROID
-EXTRA_CFLAGS += -DRTW_ENABLE_WIFI_CONTROL_FUNC -DCONFIG_RADIO_WORK
 endif
 
 ifeq ($(KERNELRELEASE),)
