@@ -17,6 +17,8 @@ EXTRA_CFLAGS += -Wno-implicit-fallthrough
 #EXTRA_CFLAGS += -Wno-uninitialized
 EXTRA_CFLAGS += -Wno-address
 EXTRA_CFLAGS += -Wno-vla -g
+EXTRA_CFLAGS += -Wno-missing-prototypes
+EXTRA_CFLAGS += -Wno-missing-declarations
 
 GCC_VER_49 := $(shell echo `$(CC) -dumpversion | cut -f1-2 -d.` \>= 4.9 | bc )
 ifeq ($(GCC_VER_49),1)
@@ -1391,7 +1393,7 @@ NOSTDINC_FLAGS += \
 KBUILD_EXTRA_SYMBOLS += $(BACKPORT_DIR)/Module.symvers
 endif
 
-EXTRA_CFLAGS += -Wno-uninitialized -Wno-typedef-redefinition
+EXTRA_CFLAGS += -Wno-uninitialized
 EXTRA_CFLAGS += -DCONFIG_LITTLE_ENDIAN
 EXTRA_CFLAGS += -DCONFIG_IOCTL_CFG80211 -DRTW_USE_CFG80211_STA_EVENT
 EXTRA_CFLAGS += -DCONFIG_RTW_IOCTL_SET_COUNTRY

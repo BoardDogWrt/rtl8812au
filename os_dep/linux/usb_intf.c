@@ -359,10 +359,10 @@ struct rtw_usb_drv usb_drv = {
 	.usbdrv.reset_resume   = rtw_resume,
 #endif
 
-#if (LINUX_VERSION_CODE >= KERNEL_VERSION(2, 6, 19))
-	.usbdrv.drvwrap.driver.shutdown = rtw_dev_shutdown,
-#else
+#if (LINUX_VERSION_CODE >= KERNEL_VERSION(6, 8, 0))
 	.usbdrv.driver.shutdown = rtw_dev_shutdown,
+#else
+	.usbdrv.drvwrap.driver.shutdown = rtw_dev_shutdown,
 #endif
 };
 
